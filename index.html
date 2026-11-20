@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vánoční Kouzlo Dárků | Inspirace pro každého</title>
+    <!-- Načtení Tailwind CSS pro moderní a responzivní design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Načtení Google Fonts: Inter a Playfair Display pro sváteční eleganci -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- FontAwesome pro ikony -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        pink: {
+                            50: '#fff5f7',
+                            100: '#ffe4ea',
+                            200: '#fecdd8',
+                            300: '#fda4ba',
+                            400: '#fb7196',
+                            500: '#f43f72',
+                            600: '#e11d58',
+                            700: '#be1247',
+                            800: '#9f123e',
+                            900: '#88133a',
+                        },
+                        gold: {
+                            100: '#fef9c3',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#d4af37',
+                            600: '#b48a28',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Vlastní styly pro jemnou estetiku a animaci vloček */
+        body {
+            background: linear-gradient(135deg, #fff5f7 0%, #ffeef2 50%, #fce7f3 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Kontejner pro padající sněhové vločky */
+        #snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 40;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -20px;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(244, 63, 114, 0.3);
+            user-select: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        /* Zlatý gradient pro prémiové akcenty */
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .gold-text {
+            background: linear-gradient(45deg, #b48a28, #d4af37, #f3d066);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Skrytí posuvníku u horizontálních filtrů na mobilu */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Stylový scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff5f7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4ba;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f43f72;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-pink-200 selection:text-pink-900">
+
+    <!-- Vrstva pro padající vločky -->
+    <div id="snow-container" aria-hidden="true"></div>
+
+    <!-- Plovoucí tlačítko pro mobilní zobrazení Wishlistu -->
+    <button id="mobile-wishlist-btn" onclick="toggleWishlistDrawer()" class="fixed bottom-6 right-6 z-40 md:hidden bg-pink-600 text-white p-4 rounded-full shadow-xl shadow-pink-500/30 flex items-center justify-center hover:bg-pink-700 transition-transform active:scale-95">
+        <i class="fa-solid fa-heart text-xl"></i>
+        <span id="mobile-wishlist-badge" class="absolute -top-1 -right-1 bg-gold-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">0</span>
+    </button>
+
+    <!-- Horní navigace -->
+    <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-pink-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="resetFilters()">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 to-pink-300 flex items-center justify-center text-white shadow-md shadow-pink-200">
+                    <i class="fa-solid fa-gift text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif font-bold text-xl sm:text-2xl text-pink-900 tracking-tight">Vánoční Kouzlo</h1>
+                    <p class="text-xs text-pink-500 font-medium hidden sm:block">Průvodce těmi nejkrásnějšími dárky</p>
+                </div>
+            </div>
+
+            <!-- Akční tlačítka v hlavičce -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <button onclick="openRandomGiftModal()" class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-4 py-2.5 rounded-full text-sm font-semibold shadow-md shadow-pink-200 flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
+                    <i class="fa-solid fa-wand-magic-sparkles text-gold-300"></i>
+                    <span>Náhodný tip</span>
+                </button>
+
+                <button onclick="toggleWishlistDrawer()" class="relative bg-pink-50 hover:bg-pink-100 text-pink-800 border border-pink-200 px-4 py-2.5 rounded-full text-sm font-semibold flex items-center gap-2 transition-colors">
+                    <i class="fa-solid fa-heart text-pink-500"></i>
+                    <span class="hidden sm:inline">Seznam přání</span>
+                    <span id="desktop-wishlist-badge" class="bg-pink-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hlavní obsah -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
+        
+        <!-- Hero sekce -->
+        <section class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 text-xs sm:text-sm font-medium mb-4 shadow-sm">
+                <i class="fa-solid fa-snowflake text-pink-400 animate-spin" style="animation-duration: 8s;"></i>
+                <span>Vánoce bez stresu a s láskou</span>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-pink-950 mb-4 leading-tight">
+                Najděte ten <span class="italic text-pink-600">dokonalý dárek</span> pro každého pod stromeček
+            </h2>
+            <p class="text-slate-600 text-base sm:text-lg leading-relaxed">
+                Vyberte věk, pohlaví nebo rozpočet a objevte pečlivě vybranou inspiraci. Své favority si můžete uložit do vlastního seznamu přání.
+            </p>
+        </section>
+
+        <!-- Filtrační panel -->
+        <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-5 sm:p-8 shadow-xl shadow-pink-200/40 border border-pink-100 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Filtr: Věková kategorie -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-pink-800 mb-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-cake-candles text-pink-500"></i> Věková kategorie
+                    </label>
+                    <select id="filter-age" onchange="applyFilters()" class="w-full bg-pink-50/70 border border-pink-200 text-slate-800 text-sm rounded-2xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400 block p-3.5 transition-all cursor-pointer font-medium">
+                        <option value="all">Všechny věkové kategorie</option>
+                        <option value="0-6">Děti (0 – 6 let)</option>
+                        <option value="7-17">Školáci a teenageři (7 – 17 let)</option>
+                        <option value="18-59">Dospělí (18 – 59 let)</option>
+                        <option value="60+">Senioři (60+ let)</option>
+                    </select>
+                </div>
+
+                <!-- Filtr: Pohlaví / Pro koho -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-pink-800 mb-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-group text-pink-500"></i> Pro koho dárek je
+                    </label>
+                    <select id="filter-gender" onchange="applyFilters()" class="w-full bg-pink-50/70 border border-pink-200 text-slate-800 text-sm rounded-2xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400 block p-3.5 transition-all cursor-pointer font-medium">
+                        <option value="all">Všichni (Ženy, Muži i Unisex)</option>
+                        <option value="female">Ženy a dívky</option>
+                        <option value="male">Muži a chlapci</option>
+                        <option value="unisex">Unisex / Pro všechny</option>
+                    </select>
+                </div>
+
+                <!-- Filtr: Rozpočet -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-pink-800 mb-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-coins text-gold-500"></i> Cenový rozpočet
+                    </label>
+                    <select id="filter-budget" onchange="applyFilters()" class="w-full bg-pink-50/70 border border-pink-200 text-slate-800 text-sm rounded-2xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400 block p-3.5 transition-all cursor-pointer font-medium">
+                        <option value="all">Jakákoliv cena</option>
+                        <option value="under500">Do 500 Kč (Milá pozornost)</option>
+                        <option value="500-1500">500 – 1 500 Kč (Zlatá střední cesta)</option>
+                        <option value="1500-4000">1 500 – 4 000 Kč (Štědrý dárek)</option>
+                        <option value="over4000">Nad 4 000 Kč (Luxusní překvapení)</option>
+                    </select>
+                </div>
+
+                <!-- Vyhledávání textem -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-pink-800 mb-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-magnifying-glass text-pink-500"></i> Hledat klíčové slovo
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Např. kniha, káva, lego..." class="w-full bg-pink-50/70 border border-pink-200 text-slate-800 text-sm rounded-2xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400 block p-3.5 pl-4 pr-10 transition-all">
+                        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-pink-400 hover:text-pink-600">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rychlé štítky (Kategorie zájmů) & Počítadlo výsledků -->
+            <div class="mt-6 pt-5 border-t border-pink-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar w-full sm:w-auto pb-1 sm:pb-0" id="quick-tags">
+                    <button onclick="setTagFilter('all')" data-tag="all" class="tag-btn active px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-600 text-white shadow-sm transition-all whitespace-nowrap">Všechny tipy</button>
+                    <button onclick="setTagFilter('Relax & Krása')" data-tag="Relax & Krása" class="tag-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 hover:bg-pink-100 transition-all whitespace-nowrap">✨ Relax & Krása</button>
+                    <button onclick="setTagFilter('Tech & Hry')" data-tag="Tech & Hry" class="tag-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 hover:bg-pink-100 transition-all whitespace-nowrap">🎮 Tech & Hry</button>
+                    <button onclick="setTagFilter('Domov & Pohoda')" data-tag="Domov & Pohoda" class="tag-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 hover:bg-pink-100 transition-all whitespace-nowrap">🕯️ Domov & Pohoda</button>
+                    <button onclick="setTagFilter('Zážitek & Tvoření')" data-tag="Zážitek & Tvoření" class="tag-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 hover:bg-pink-100 transition-all whitespace-nowrap">🎨 Zážitek & Tvoření</button>
+                    <button onclick="setTagFilter('Gurmán')" data-tag="Gurmán" class="tag-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 hover:bg-pink-100 transition-all whitespace-nowrap">🍫 Gurmán</button>
+                </div>
+
+                <div class="flex items-center gap-3 self-end sm:self-auto">
+                    <span id="results-count" class="text-xs font-medium text-slate-500">Zobrazeno 0 tipů</span>
+                    <button id="reset-filters-btn" onclick="resetFilters()" class="hidden text-xs font-semibold text-pink-600 hover:text-pink-800 underline">
+                        Vymazat filtry
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mřížka s dárky -->
+        <section id="gifts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Karty dárků se vykreslí dynamicky pomocí JS -->
+        </section>
+
+        <!-- Prázdný stav (pokud filtrům nic neodpovídá) -->
+        <div id="empty-state" class="hidden text-center py-16 px-4 bg-white/80 rounded-3xl border border-pink-100 shadow-sm">
+            <div class="w-20 h-20 bg-pink-100 text-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                <i class="fa-solid fa-gift"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-pink-950 mb-2">Žádný dárek neodpovídá výběru</h3>
+            <p class="text-slate-600 max-w-md mx-auto mb-6">Zkuste upravit věkovou kategorii, rozpočet nebo zrušit některé filtry, ať můžeme najít to pravé překvapení.</p>
+            <button onclick="resetFilters()" class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-3 rounded-full shadow-md transition-all">
+                Zobrazit všechny dárky
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Patička -->
+    <footer class="bg-white/70 border-t border-pink-100 mt-20 py-10 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex items-center justify-center gap-2 text-pink-600 font-serif font-bold text-lg mb-2">
+                <i class="fa-solid fa-sparkles text-gold-500"></i>
+                <span>Vánoční Kouzlo Dárků</span>
+                <i class="fa-solid fa-sparkles text-gold-500"></i>
+            </div>
+            <p class="text-slate-500 text-sm mb-4">Vytvořeno s láskou pro klidné a radostné svátky.</p>
+            <p class="text-xs text-slate-400">Tip: Váš seznam přání se automaticky ukládá v prohlížeči.</p>
+        </div>
+    </footer>
+
+    <!-- BOČNÍ PANEL: Seznam přání (Wishlist Drawer) -->
+    <div id="wishlist-backdrop" onclick="toggleWishlistDrawer()" class="fixed inset-0 bg-pink-950/30 backdrop-blur-xs z-40 hidden transition-opacity opacity-0"></div>
+    
+    <aside id="wishlist-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-pink-100">
+        <!-- Hlavička wishlistu -->
+        <div class="p-6 bg-gradient-to-r from-pink-50 to-rose-50 border-b border-pink-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-xl text-pink-950">Můj seznam přání</h3>
+                    <p id="wishlist-drawer-subtitle" class="text-xs text-pink-600 font-medium">0 uložených dárků</p>
+                </div>
+            </div>
+            <button onclick="toggleWishlistDrawer()" class="w-9 h-9 rounded-full bg-white text-slate-500 hover:text-pink-600 hover:bg-pink-100 flex items-center justify-center transition-colors shadow-xs">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Seznam položek ve wishlistu -->
+        <div id="wishlist-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Položky se vykreslí dynamicky -->
+        </div>
+
+        <!-- Patička wishlistu se součtem a sdílením -->
+        <div id="wishlist-footer" class="p-6 bg-pink-50/80 border-t border-pink-100 space-y-4">
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-slate-600 font-medium">Odhadovaný rozpočet celkem:</span>
+                <span id="wishlist-total-price" class="font-bold text-lg text-pink-800">0 Kč</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="copyWishlistToClipboard()" class="col-span-2 bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-4 rounded-2xl shadow-md shadow-pink-200 flex items-center justify-center gap-2 transition-all active:scale-98">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>Zkopírovat seznam pro Ježíška</span>
+                </button>
+                <button onclick="clearWishlist()" class="col-span-2 text-xs text-slate-500 hover:text-rose-600 font-medium py-1 transition-colors">
+                    Vymazat celý seznam
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MODÁLNÍ OKNO: Náhodný tip (Generátor překvapení) -->
+    <div id="random-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-pink-950/40 backdrop-blur-xs">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-pink-200 relative transform transition-all scale-95 opacity-0" id="random-modal-content">
+            <button onclick="closeRandomGiftModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-pink-50 text-pink-600 hover:bg-pink-100 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-5">
+                <span class="inline-block px-3 py-1 rounded-full bg-gold-100 text-gold-600 text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Vánoční překvapení
+                </span>
+                <h3 class="font-serif text-2xl font-bold text-pink-950">Co třeba tento dárek?</h3>
+            </div>
+
+            <!-- Karta náhodného dárku -->
+            <div id="random-gift-display" class="bg-pink-50/70 rounded-2xl p-5 border border-pink-100 mb-6 text-center">
+                <!-- Obsah doplní JS -->
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="spinRandomGift()" class="flex-1 bg-pink-100 hover:bg-pink-200 text-pink-800 font-semibold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span>Zkusit jiný</span>
+                </button>
+                <button id="random-add-wishlist-btn" class="flex-1 bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-4 rounded-2xl shadow-md shadow-pink-200 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Uložit do přání</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFIKACE (místo alertu) -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-pink-900 text-white px-5 py-3 rounded-full shadow-xl flex items-center gap-2.5 text-sm font-medium transition-all duration-300 opacity-0 translate-y-10 pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-pink-300"></i>
+        <span id="toast-message">Zpráva</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIKA A DATABÁZE DÁRKŮ -->
+    <script>
+        // ==========================================
+        // 1. BOHATÁ DATABÁZE VÁNOČNÍCH DÁRKŮ (44 tipů)
+        // ==========================================
+        const giftsDatabase = [
+            // --- DĚTI 0-6 LET ---
+            {
+                id: 1,
+                title: "Dřevěná duhová skládačka Montessori",
+                description: "Krásná pastelová dřevěná duha rozvíjející jemnou motoriku, kreativitu a prostorovou představivost nejmenších dětí.",
+                price: 690,
+                budgetCat: "500-1500",
+                age: "0-6",
+                gender: "unisex",
+                tag: "Zážitek & Tvoření",
+                icon: "🌈"
+            },
+            {
+                id: 2,
+                title: "Měkoučký usínáček Králíček s bílým šumem",
+                description: "Hebký plyšový kamarád v pudrové barvě, který hraje ukolébavky a tlukot srdce pro klidný spánek miminek i batolat.",
+                price: 890,
+                budgetCat: "500-1500",
+                age: "0-6",
+                gender: "female",
+                tag: "Domov & Pohoda",
+                icon: "🐰"
+            },
+            {
+                id: 3,
+                title: "Dřevěná vláčkodráha s elektrickou lokomotivou",
+                description: "Klasická dřevěná dráha s mostem, stromy a mašinkou na baterie, která zabaví malé stavitele na dlouhé hodiny.",
+                price: 1290,
+                budgetCat: "500-1500",
+                age: "0-6",
+                gender: "male",
+                tag: "Tech & Hry",
+                icon: "🚂"
+            },
+            {
+                id: 4,
+                title: "Kouzelná knížka s Albi tužkou – Zpívánky",
+                description: "Interaktivní mluvící kniha plná českých lidových písniček a říkanek, která děti učí hrou.",
+                price: 1150,
+                budgetCat: "500-1500",
+                age: "0-6",
+                gender: "unisex",
+                tag: "Zážitek & Tvoření",
+                icon: "📖"
+            },
+            {
+                id: 5,
+                title: "Dětský dřevěný čajový set v kufříku",
+                description: "Roztomilý růžovo-zlatý čajový servis s konvičkou, hrníčky a dřevěnými makronkami pro malé hostitelky.",
+                price: 590,
+                budgetCat: "500-1500",
+                age: "0-6",
+                gender: "female",
+                tag: "Zážitek & Tvoření",
+                icon: "🫖"
+            },
+            {
+                id: 6,
+                title: "První odrážedlo ve stylu retro motorky",
+                description: "Lehké a stabilní odrážedlo v pastelových barvách pro rozvoj rovnováhy malých závodníků.",
+                price: 1650,
+                budgetCat: "1500-4000",
+                age: "0-6",
+                gender: "male",
+                tag: "Zážitek & Tvoření",
+                icon: "🛵"
+            },
+            {
+                id: 7,
+                title: "Magnetická stavebnice – Základní sada 40 dílů",
+                description: "Barevné průsvitné magnetické dílky, ze kterých i malé ručičky snadno postaví hrady, rakety nebo domečky.",
+                price: 1390,
+                budgetCat: "500-1500",
+                age: "0-6",
+                gender: "unisex",
+                tag: "Tech & Hry",
+                icon: "🧊"
+            },
+            {
+                id: 8,
+                title: "Modelína Play-Doh – Zmrzlinářský stánek",
+                description: "Kreativní sada s netoxickou modelínou a tvořítky na výrobu barevných pohárů a kornoutků.",
+                price: 450,
+                budgetCat: "under500",
+                age: "0-6",
+                gender: "unisex",
+                tag: "Zážitek & Tvoření",
+                icon: "🍦"
+            },
+
+            // --- ŠKOLÁCI A TEENAGEŘI 7-17 LET ---
+            {
+                id: 9,
+                title: "Instantní fotoaparát Instax Mini 12 (Blossom Pink)",
+                description: "Stylový foťák v pastelově růžové barvě, který vytiskne vzpomínky s kamarády během pár vteřin.",
+                price: 2190,
+                budgetCat: "1500-4000",
+                age: "7-17",
+                gender: "female",
+                tag: "Tech & Hry",
+                icon: "📸"
+            },
+            {
+                id: 10,
+                title: "Bezdrátová sluchátka přes uši s ANC",
+                description: "Pohodlná sluchátka s aktivním potlačením hluku, skvělými basy a výdrží až 40 hodin na jedno nabití.",
+                price: 2490,
+                budgetCat: "1500-4000",
+                age: "7-17",
+                gender: "unisex",
+                tag: "Tech & Hry",
+                icon: "🎧"
+            },
+            {
+                id: 11,
+                title: "Stavebnice LEGO Technic – Závodní hypersport",
+                description: "Detailně propracovaný model supersportu s pohyblivými písty a řízením pro mladé technické nadšence.",
+                price: 1390,
+                budgetCat: "500-1500",
+                age: "7-17",
+                gender: "male",
+                tag: "Tech & Hry",
+                icon: "🏎️"
+            },
+            {
+                id: 12,
+                title: "LED neonový nápis na zeď (Měsíc nebo Srdce)",
+                description: "Moderní dekorace do pokojíčku, která večer vytvoří útulnou atmosféru pro focení i relax.",
+                price: 490,
+                budgetCat: "under500",
+                age: "7-17",
+                gender: "female",
+                tag: "Domov & Pohoda",
+                icon: "🌙"
+            },
+            {
+                id: 13,
+                title: "Desková hra Karak II (Česká edice)",
+                description: "Napínavá rodinná dobrodružná hra plná hrdinů, příšer a pokladů. Skvělá zábava na vánoční prázdniny.",
+                price: 890,
+                budgetCat: "500-1500",
+                age: "7-17",
+                gender: "unisex",
+                tag: "Tech & Hry",
+                icon: "🎲"
+            },
+            {
+                id: 14,
+                title: "Sada pro tvorbu vlastních šperků a náramků",
+                description: "Bohatý box plný perliček, přívěsků a šňůrek pro výrobu originálních náramků přátelství.",
+                price: 420,
+                budgetCat: "under500",
+                age: "7-17",
+                gender: "female",
+                tag: "Zážitek & Tvoření",
+                icon: "📿"
+            },
+            {
+                id: 15,
+                title: "Chytrý fitness náramek s barevným displejem",
+                description: "Sleduje kroky, sportovní aktivity, spánek a zobrazuje notifikace z mobilu. Voděodolný a lehký.",
+                price: 1190,
+                budgetCat: "500-1500",
+                age: "7-17",
+                gender: "male",
+                tag: "Tech & Hry",
+                icon: "⌚"
+            },
+            {
+                id: 16,
+                title: "Elektrická koloběžka do města",
+                description: "Splněný sen každého teenagera. Bezpečná, skládací elektrokoloběžka s dojezdem až 25 km.",
+                price: 7990,
+                budgetCat: "over4000",
+                age: "7-17",
+                gender: "unisex",
+                tag: "Tech & Hry",
+                icon: "🛴"
+            },
+            {
+                id: 17,
+                title: "Balíček korejské pleťové kosmetiky (Glow Set)",
+                description: "Jemná pečující kosmetika s kyselinou hyaluronovou, plátýnkovými maskami a balzámem na rty.",
+                price: 750,
+                budgetCat: "500-1500",
+                age: "7-17",
+                gender: "female",
+                tag: "Relax & Krása",
+                icon: "🧴"
+            },
+            {
+                id: 18,
+                title: "3D tiskové pero s barevnými náplněmi",
+                description: "Umožňuje kreslit přímo ve vzduchu a vytvářet vlastní 3D modely a figurky.",
+                price: 850,
+                budgetCat: "500-1500",
+                age: "7-17",
+                gender: "male",
+                tag: "Zážitek & Tvoření",
+                icon: "🖊️"
+            },
+
+            // --- DOSPĚLÍ 18-59 LET ---
+            {
+                id: 19,
+                title: "Hedvábný povlak na polštář (100% Morušové hedvábí)",
+                description: "Luxusní péče o pleť a vlasy během spánku v nádherném odstínu starorůžové. Zabraňuje lámání vlasů.",
+                price: 1490,
+                budgetCat: "500-1500",
+                age: "18-59",
+                gender: "female",
+                tag: "Relax & Krása",
+                icon: "✨"
+            },
+            {
+                id: 20,
+                title: "Pákový kávovar pro domácí baristy",
+                description: "Připravte si dokonalé espresso nebo krémové cappuccino jako z oblíbené kavárny přímo v pohodlí domova.",
+                price: 5490,
+                budgetCat: "over4000",
+                age: "18-59",
+                gender: "unisex",
+                tag: "Gurmán",
+                icon: "☕"
+            },
+            {
+                id: 21,
+                title: "Kožená peněženka s RFID ochranou (Ruční práce)",
+                description: "Minimalistická, tenká peněženka z pravé italské kůže s prostorem na karty a bankovky.",
+                price: 1290,
+                budgetCat: "500-1500",
+                age: "18-59",
+                gender: "male",
+                tag: "Relax & Krása",
+                icon: "💼"
+            },
+            {
+                id: 22,
+                title: "Sójová vonná svíčka s dřevěným knotem (Růže & Vanilka)",
+                description: "Ručně litá svíčka v elegantním skle, která při hoření jemně praská jako oheň v krbu.",
+                price: 460,
+                budgetCat: "under500",
+                age: "18-59",
+                gender: "female",
+                tag: "Domov & Pohoda",
+                icon: "🕯️"
+            },
+            {
+                id: 23,
+                title: "Degustační sada výběrových rumů světa",
+                description: "Dárková kazeta s pěti vzorky prémiových stařených rumů a degustační skleničkou.",
+                price: 1350,
+                budgetCat: "500-1500",
+                age: "18-59",
+                gender: "male",
+                tag: "Gurmán",
+                icon: "🥃"
+            },
+            {
+                id: 24,
+                title: "Zátěžová přikrývka pro hluboký spánek (7 kg)",
+                description: "Terapeutická deka, která jemným tlakem snižuje stres, úzkost a pomáhá rychleji usnout.",
+                price: 2390,
+                budgetCat: "1500-4000",
+                age: "18-59",
+                gender: "unisex",
+                tag: "Domov & Pohoda",
+                icon: "🛌"
+            },
+            {
+                id: 25,
+                title: "Poukaz na privátní wellness a thajskou masáž",
+                description: "Nezapomenutelný odpočinek ve vířivce se sklenkou prosecca a uvolňující masáží zad a šíje.",
+                price: 2600,
+                budgetCat: "1500-4000",
+                age: "18-59",
+                gender: "female",
+                tag: "Zážitek & Tvoření",
+                icon: "🧖‍♀️"
+            },
+            {
+                id: 26,
+                title: "Chytrý zahradní květináč s LED osvětlením",
+                description: "Automatický hydroponický květináč na čerstvou bazalku, mátu nebo chilli po celý rok v kuchyni.",
+                price: 1890,
+                budgetCat: "1500-4000",
+                age: "18-59",
+                gender: "unisex",
+                tag: "Domov & Pohoda",
+                icon: "🌿"
+            },
+            {
+                id: 27,
+                title: "Masážní pistole pro regeneraci svalů",
+                description: "Výkonný a tichý masážní přístroj s 6 nástavci pro uvolnění ztuhlých zad po práci i po sportu.",
+                price: 1790,
+                budgetCat: "1500-4000",
+                age: "18-59",
+                gender: "male",
+                tag: "Relax & Krása",
+                icon: "💪"
+            },
+            {
+                id: 28,
+                title: "Elektronická čtečka knih Kindle Paperwhite",
+                description: "Voděodolná čtečka s displejem šetrným k očím, podsvícením a výdrží baterie několik týdnů.",
+                price: 3890,
+                budgetCat: "1500-4000",
+                age: "18-59",
+                gender: "unisex",
+                tag: "Tech & Hry",
+                icon: "📚"
+            },
+            {
+                id: 29,
+                title: "Zlatý minimalistický náhrdelník se sladkovodní perlou",
+                description: "Jemný nadčasový šperk ze 14karátového zlata, který podtrhne ženskou eleganci každý den.",
+                price: 4500,
+                budgetCat: "over4000",
+                age: "18-59",
+                gender: "female",
+                tag: "Relax & Krása",
+                icon: "📿"
+            },
+            {
+                id: 30,
+                title: "Kvalitní kuchařský nůž z damaškové oceli",
+                description: "Extrémně ostrý a dokonale vyvážený nůž v dárkové dřevěné krabičce pro každého milovníka vaření.",
+                price: 2290,
+                budgetCat: "1500-4000",
+                age: "18-59",
+                gender: "male",
+                tag: "Gurmán",
+                icon: "🔪"
+            },
+            {
+                id: 31,
+                title: "Dárková sada výběrové čokolády a makronek",
+                description: "Ručně vyráběné pralinky z belgické čokolády a křehké francouzské makronky v růžové krabičce.",
+                price: 480,
+                budgetCat: "under500",
+                age: "18-59",
+                gender: "unisex",
+                tag: "Gurmán",
+                icon: "🍫"
+            },
+            {
+                id: 32,
+                title: "Kurz malování při sklence vína (Art & Wine)",
+                description: "Kreativní večer pod vedením lektora, ze kterého si odnesete vlastní obraz na plátně.",
+                price: 1250,
+                budgetCat: "500-1500",
+                age: "18-59",
+                gender: "female",
+                tag: "Zážitek & Tvoření",
+                icon: "🎨"
+            },
+
+            // --- SENIOŘI 60+ LET ---
+            {
+                id: 33,
+                title: "Vyhřívaná elektrická dečka z jemného mikroplyše",
+                description: "Hřejivá deka s 6 stupni teploty a automatickým vypnutím pro maximální pohodu během zimních večerů.",
+                price: 1190,
+                budgetCat: "500-1500",
+                age: "60+",
+                gender: "unisex",
+                tag: "Domov & Pohoda",
+                icon: "🧣"
+            },
+            {
+                id: 34,
+                title: "Rodinná fotokniha v pevné vazbě",
+                description: "Osobní dárek plný společných vzpomínek, fotografií vnoučat a rodinných oslav.",
+                price: 790,
+                budgetCat: "500-1500",
+                age: "60+",
+                gender: "unisex",
+                tag: "Zážitek & Tvoření",
+                icon: "🖼️"
+            },
+            {
+                id: 35,
+                title: "Kašmírová šála v pudrově růžové barvě",
+                description: "Neuvěřitelně jemná, lehká a hřejivá šála, která nedráždí pokožku a dodá šmrnc každému kabátu.",
+                price: 1890,
+                budgetCat: "1500-4000",
+                age: "60+",
+                gender: "female",
+                tag: "Relax & Krása",
+                icon: "🧣"
+            },
+            {
+                id: 36,
+                title: "Předplatné oblíbeného časopisu na celý rok",
+                description: "Pravidelná radost ve schránce každý měsíc – křížovky, zahradničení, historie nebo cestování.",
+                price: 650,
+                budgetCat: "500-1500",
+                age: "60+",
+                gender: "unisex",
+                tag: "Domov & Pohoda",
+                icon: "📰"
+            },
+            {
+                id: 37,
+                title: "Dřevěná šachová souprava s vykládanou šachovnicí",
+                description: "Klasické ručně vyřezávané dřevěné šachy v kazetě pro bystření mysli a klidná odpoledne.",
+                price: 1150,
+                budgetCat: "500-1500",
+                age: "60+",
+                gender: "male",
+                tag: "Tech & Hry",
+                icon: "♟️"
+            },
+            {
+                id: 38,
+                title: "Bylinný dárkový set s rakytníkem a medem",
+                description: "Poctivé české sirupy, pečené čaje a bylinné směsi na podporu imunity a vitality.",
+                price: 490,
+                budgetCat: "under500",
+                age: "60+",
+                gender: "unisex",
+                tag: "Gurmán",
+                icon: "🍯"
+            },
+            {
+                id: 39,
+                title: "Lázeňský pobyt na 3 dny s procedurami",
+                description: "Odpočinkový pobyt v českých lázních s polopenzí, perličkovou koupelí a masáží.",
+                price: 4990,
+                budgetCat: "over4000",
+                age: "60+",
+                gender: "unisex",
+                tag: "Zážitek & Tvoření",
+                icon: "🏨"
+            },
+            {
+                id: 40,
+                title: "Digitální fotorámeček s Wi-Fi připojením",
+                description: "Celá rodina může posílat nové fotky přímo z mobilu rovnou na stůl babičky a dědečka.",
+                price: 2490,
+                budgetCat: "1500-4000",
+                age: "60+",
+                gender: "unisex",
+                tag: "Tech & Hry",
+                icon: "📱"
+            },
+            {
+                id: 41,
+                title: "Kvalitní trekingové hole pro Nordic Walking",
+                description: "Lehké odpružené hole s ergonomickou rukojetí pro zdravé a bezpečné procházky v přírodě.",
+                price: 990,
+                budgetCat: "500-1500",
+                age: "60+",
+                gender: "male",
+                tag: "Relax & Krása",
+                icon: "🥾"
+            },
+            {
+                id: 42,
+                title: "Luxusní sada krémů na ruce s bambuckým máslem",
+                description: "Vyživující péče s jemnou vůní levandule a růže v krásné plechové dóze.",
+                price: 440,
+                budgetCat: "under500",
+                age: "60+",
+                gender: "female",
+                tag: "Relax & Krása",
+                icon: "🌸"
+            }
+        ];
+
+        // ==========================================
+        // 2. STAV APLIKACE A LOCALSTORAGE
+        // ==========================================
+        let wishlist = JSON.parse(localStorage.getItem('christmas_wishlist_pink')) || [];
+        let activeTagFilter = 'all';
+        let currentRandomGift = null;
+
+        // ==========================================
+        // 3. INICIALIZACE PO NAČTENÍ STRÁNKY
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            createSnowflakes();
+            applyFilters();
+            updateWishlistUI();
+        });
+
+        // ==========================================
+        // 4. GENERÁTOR PADÁJÍCÍCH SNĚHOVÝCH VLOČEK
+        // ==========================================
+        function createSnowflakes() {
+            const container = document.getElementById('snow-container');
+            const snowflakeChars = ['❄', '❅', '❆', '•'];
+            const count = window.innerWidth < 640 ? 22 : 40; // Méně vloček na mobilu pro plynulost
+
+            for (let i = 0; i < count; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                
+                const size = Math.random() * 14 + 8; // 8px až 22px
+                const left = Math.random() * 100; // 0% až 100%
+                const duration = Math.random() * 10 + 10; // 10s až 20s
+                const delay = Math.random() * 15; // 0s až 15s
+                const opacity = Math.random() * 0.6 + 0.3;
+
+                flake.style.fontSize = `${size}px`;
+                flake.style.left = `${left}vw`;
+                flake.style.animationDuration = `${duration}s`;
+                flake.style.animationDelay = `-${delay}s`;
+                flake.style.opacity = opacity;
+
+                container.appendChild(flake);
+            }
+        }
+
+        // ==========================================
+        // 5. FILTROVÁNÍ A VYKRESLOVÁNÍ KARET DÁRKŮ
+        // ==========================================
+        function setTagFilter(tag) {
+            activeTagFilter = tag;
+            
+            // Aktualizace vzhledu tlačítek štítků
+            document.querySelectorAll('.tag-btn').forEach(btn => {
+                if (btn.dataset.tag === tag) {
+                    btn.classList.remove('bg-pink-50', 'text-pink-700', 'hover:bg-pink-100');
+                    btn.classList.add('bg-pink-600', 'text-white', 'shadow-sm');
+                } else {
+                    btn.classList.add('bg-pink-50', 'text-pink-700', 'hover:bg-pink-100');
+                    btn.classList.remove('bg-pink-600', 'text-white', 'shadow-sm');
+                }
+            });
+
+            applyFilters();
+        }
+
+        function clearSearch() {
+            document.getElementById('filter-search').value = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            applyFilters();
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-age').value = 'all';
+            document.getElementById('filter-gender').value = 'all';
+            document.getElementById('filter-budget').value = 'all';
+            document.getElementById('filter-search').value = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            setTagFilter('all');
+        }
+
+        function applyFilters() {
+            const ageVal = document.getElementById('filter-age').value;
+            const genderVal = document.getElementById('filter-gender').value;
+            const budgetVal = document.getElementById('filter-budget').value;
+            const searchVal = document.getElementById('filter-search').value.trim().toLowerCase();
+
+            // Zobrazení/skrytí křížku ve vyhledávání
+            const clearSearchBtn = document.getElementById('clear-search-btn');
+            if (searchVal.length > 0) {
+                clearSearchBtn.classList.remove('hidden');
+            } else {
+                clearSearchBtn.classList.add('hidden');
+            }
+
+            // Zobrazení/skrytí tlačítka Vymazat filtry
+            const isFiltered = ageVal !== 'all' || genderVal !== 'all' || budgetVal !== 'all' || searchVal !== '' || activeTagFilter !== 'all';
+            const resetBtn = document.getElementById('reset-filters-btn');
+            if (isFiltered) {
+                resetBtn.classList.remove('hidden');
+            } else {
+                resetBtn.classList.add('hidden');
+            }
+
+            // Filtrace pole dárků
+            const filteredGifts = giftsDatabase.filter(gift => {
+                // Věk
+                if (ageVal !== 'all' && gift.age !== ageVal) return false;
+                
+                // Pohlaví (pokud uživatel vybere např. Ženy, ukážeme Ženy i Unisex!)
+                if (genderVal !== 'all') {
+                    if (genderVal === 'unisex' && gift.gender !== 'unisex') return false;
+                    if (genderVal === 'female' && gift.gender !== 'female' && gift.gender !== 'unisex') return false;
+                    if (genderVal === 'male' && gift.gender !== 'male' && gift.gender !== 'unisex') return false;
+                }
+
+                // Rozpočet
+                if (budgetVal !== 'all' && gift.budgetCat !== budgetVal) return false;
+
+                // Štítek
+                if (activeTagFilter !== 'all' && gift.tag !== activeTagFilter) return false;
+
+                // Textové vyhledávání
+                if (searchVal !== '') {
+                    const inTitle = gift.title.toLowerCase().includes(searchVal);
+                    const inDesc = gift.description.toLowerCase().includes(searchVal);
+                    const inTag = gift.tag.toLowerCase().includes(searchVal);
+                    if (!inTitle && !inDesc && !inTag) return false;
+                }
+
+                return true;
+            });
+
+            renderGiftsGrid(filteredGifts);
+        }
+
+        function getAgeLabel(age) {
+            const map = {
+                '0-6': '0–6 let',
+                '7-17': '7–17 let',
+                '18-59': 'Dospělí',
+                '60+': 'Senioři 60+'
+            };
+            return map[age] || age;
+        }
+
+        function getGenderBadge(gender) {
+            if (gender === 'female') return '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-pink-100 text-pink-700">Pro ženy / dívky</span>';
+            if (gender === 'male') return '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-700">Pro muže / chlapce</span>';
+            return '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-700">Unisex</span>';
+        }
+
+        function formatPrice(price) {
+            return price.toLocaleString('cs-CZ') + ' Kč';
+        }
+
+        function renderGiftsGrid(gifts) {
+            const grid = document.getElementById('gifts-grid');
+            const emptyState = document.getElementById('empty-state');
+            const countLabel = document.getElementById('results-count');
+
+            // Správné skloňování slova "tip"
+            let countText = `Zobrazeno ${gifts.length} tipů`;
+            if (gifts.length === 1) countText = 'Zobrazen 1 tip';
+            else if (gifts.length >= 2 && gifts.length <= 4) countText = `Zobrazeny ${gifts.length} tipy`;
+            countLabel.textContent = countText;
+
+            if (gifts.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = gifts.map(gift => {
+                const isSaved = wishlist.includes(gift.id);
+                return `
+                <article class="group bg-white rounded-3xl p-6 shadow-md shadow-pink-100/60 hover:shadow-xl hover:shadow-pink-200/70 border border-pink-100/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <!-- Dekorativní růžový roh -->
+                    <div class="absolute -right-8 -top-8 w-24 h-24 bg-pink-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+                    
+                    <div class="relative z-10">
+                        <!-- Horní lišta karty: Ikona a Srdíčko -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-50 to-rose-100 border border-pink-200/60 flex items-center justify-center text-3xl shadow-xs group-hover:scale-105 transition-transform">
+                                ${gift.icon}
+                            </div>
+                            <button onclick="toggleWishlistItem(${gift.id})" aria-label="Přidat do seznamu přání" class="w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSaved ? 'bg-pink-500 text-white shadow-md shadow-pink-300' : 'bg-pink-50 text-pink-400 hover:bg-pink-100 hover:text-pink-600'}">
+                                <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart text-lg"></i>
+                            </button>
+                        </div>
+
+                        <!-- Štítky kategorie -->
+                        <div class="flex flex-wrap items-center gap-1.5 mb-3">
+                            ${getGenderBadge(gift.gender)}
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200/50">${getAgeLabel(gift.age)}</span>
+                        </div>
+
+                        <!-- Název a popis -->
+                        <h3 class="font-serif font-bold text-lg text-slate-900 mb-2 group-hover:text-pink-700 transition-colors leading-snug">
+                            ${gift.title}
+                        </h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            ${gift.description}
+                        </p>
+                    </div>
+
+                    <!-- Spodní lišta karty: Cena a Tlačítko -->
+                    <div class="relative z-10 pt-4 border-t border-pink-50 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Orientační cena</span>
+                            <span class="font-bold text-lg text-pink-700">${formatPrice(gift.price)}</span>
+                        </div>
+                        <button onclick="toggleWishlistItem(${gift.id})" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${isSaved ? 'bg-pink-100 text-pink-800' : 'bg-pink-600 hover:bg-pink-700 text-white shadow-sm shadow-pink-200'}">
+                            ${isSaved ? '<i class="fa-solid fa-check"></i> Uloženo' : '<i class="fa-solid fa-plus"></i> Chci to'}
+                        </button>
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // 6. SPRÁVA SEZNAMU PŘÁNÍ (WISHLIST)
+        // ==========================================
+        function toggleWishlistItem(id) {
+            const index = wishlist.indexOf(id);
+            const gift = giftsDatabase.find(g => g.id === id);
+
+            if (index === -1) {
+                wishlist.push(id);
+                showToast(`„${gift.title}“ přidáno do seznamu přání!`, 'heart');
+            } else {
+                wishlist.splice(index, 1);
+                showToast(`Odebráno ze seznamu přání.`, 'trash');
+            }
+
+            localStorage.setItem('christmas_wishlist_pink', JSON.stringify(wishlist));
+            applyFilters(); // Překreslí srdíčka na kartách
+            updateWishlistUI();
+            
+            // Pokud je otevřené modální okno náhodného dárku, aktualizujeme i jeho tlačítko
+            if (currentRandomGift && currentRandomGift.id === id) {
+                updateRandomModalButton();
+            }
+        }
+
+        function updateWishlistUI() {
+            const count = wishlist.length;
+            document.getElementById('desktop-wishlist-badge').textContent = count;
+            document.getElementById('mobile-wishlist-badge').textContent = count;
+            
+            let subText = `${count} uložených dárků`;
+            if (count === 1) subText = '1 uložený dárek';
+            else if (count >= 2 && count <= 4) subText = `${count} uložené dárky`;
+            document.getElementById('wishlist-drawer-subtitle').textContent = subText;
+
+            const container = document.getElementById('wishlist-items-container');
+            const footer = document.getElementById('wishlist-footer');
+
+            if (count === 0) {
+                footer.classList.add('hidden');
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center py-10">
+                        <div class="w-16 h-16 rounded-full bg-pink-50 text-pink-300 flex items-center justify-center text-2xl mb-4">
+                            <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <h4 class="font-serif font-bold text-lg text-slate-800 mb-1">Váš seznam je zatím prázdný</h4>
+                        <p class="text-sm text-slate-500 max-w-xs">Klikněte na srdíčko u jakéhokoliv tipu na dárek a uložte si ho sem pro inspiraci.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            footer.classList.remove('hidden');
+            let total = 0;
+
+            container.innerHTML = wishlist.map(id => {
+                const gift = giftsDatabase.find(g => g.id === id);
+                if (!gift) return '';
+                total += gift.price;
+
+                return `
+                <div class="bg-pink-50/50 rounded-2xl p-3.5 border border-pink-100 flex items-center gap-3.5 transition-all hover:bg-pink-50">
+                    <div class="w-12 h-12 rounded-xl bg-white border border-pink-100 flex items-center justify-center text-2xl shrink-0 shadow-2xs">
+                        ${gift.icon}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-semibold text-sm text-slate-900 truncate" title="${gift.title}">${gift.title}</h4>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs font-bold text-pink-600">${formatPrice(gift.price)}</span>
+                            <span class="text-[11px] text-slate-400">• ${getAgeLabel(gift.age)}</span>
+                        </div>
+                    </div>
+                    <button onclick="toggleWishlistItem(${gift.id})" title="Odebrat" class="w-8 h-8 rounded-full text-slate-400 hover:text-rose-600 hover:bg-white flex items-center justify-center transition-colors shrink-0">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+                `;
+            }).join('');
+
+            document.getElementById('wishlist-total-price').textContent = formatPrice(total);
+        }
+
+        function toggleWishlistDrawer() {
+            const drawer = document.getElementById('wishlist-drawer');
+            const backdrop = document.getElementById('wishlist-backdrop');
+            const isClosed = drawer.classList.contains('translate-x-full');
+
+            if (isClosed) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                backdrop.classList.add('opacity-0');
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+                document.body.style.overflow = '';
+            }
+        }
+
+        function clearWishlist() {
+            wishlist = [];
+            localStorage.setItem('christmas_wishlist_pink', JSON.stringify(wishlist));
+            applyFilters();
+            updateWishlistUI();
+            showToast('Seznam přání byl vymazán.', 'trash');
+        }
+
+        function copyWishlistToClipboard() {
+            if (wishlist.length === 0) return;
+
+            let total = 0;
+            let text = "🎄 Můj vánoční seznam přání (Vánoční Kouzlo):\n\n";
+            
+            wishlist.forEach((id, index) => {
+                const gift = giftsDatabase.find(g => g.id === id);
+                if (gift) {
+                    total += gift.price;
+                    text += `${index + 1}. ${gift.title} (cca ${formatPrice(gift.price)})\n`;
+                }
+            });
+
+            text += `\nCelkový odhad: ${formatPrice(total)} ✨`;
+
+            // Použití spolehlivého fallbacku execCommand('copy') pro iFrame i moderní prohlížeče
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Seznam zkopírován do schránky! Můžete ho poslat Ježíškovi.', 'check');
+            } catch (err) {
+                showToast('Nepodařilo se zkopírovat text.', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ==========================================
+        // 7. NÁHODNÝ TIP (GENERÁTOR PŘEKVAPENÍ)
+        // ==========================================
+        function openRandomGiftModal() {
+            const modal = document.getElementById('random-modal');
+            const content = document.getElementById('random-modal-content');
+            
+            spinRandomGift();
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeRandomGiftModal() {
+            const modal = document.getElementById('random-modal');
+            const content = document.getElementById('random-modal-content');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        function spinRandomGift() {
+            // Vybírá z aktuálně vyfiltrovaných dárků, nebo ze všech, pokud je filtr prázdný
+            const ageVal = document.getElementById('filter-age').value;
+            const genderVal = document.getElementById('filter-gender').value;
+            
+            let pool = giftsDatabase.filter(g => {
+                if (ageVal !== 'all' && g.age !== ageVal) return false;
+                if (genderVal !== 'all' && g.gender !== genderVal && g.gender !== 'unisex') return false;
+                return true;
+            });
+
+            if (pool.length === 0) pool = giftsDatabase;
+
+            // Zajistí, aby nepadl stejný dárek dvakrát po sobě
+            let randomGift;
+            do {
+                randomGift = pool[Math.floor(Math.random() * pool.length)];
+            } while (pool.length > 1 && currentRandomGift && randomGift.id === currentRandomGift.id);
+
+            currentRandomGift = randomGift;
+
+            const display = document.getElementById('random-gift-display');
+            display.innerHTML = `
+                <div class="w-16 h-16 rounded-2xl bg-white border border-pink-200 flex items-center justify-center text-4xl mx-auto mb-3 shadow-sm">
+                    ${randomGift.icon}
+                </div>
+                <div class="flex items-center justify-center gap-1.5 mb-2">
+                    ${getGenderBadge(randomGift.gender)}
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800">${getAgeLabel(randomGift.age)}</span>
+                </div>
+                <h4 class="font-serif font-bold text-xl text-pink-950 mb-2">${randomGift.title}</h4>
+                <p class="text-slate-600 text-sm mb-3">${randomGift.description}</p>
+                <div class="inline-block px-4 py-1 rounded-full bg-white border border-pink-200 font-bold text-pink-700 text-base">
+                    ${formatPrice(randomGift.price)}
+                </div>
+            `;
+
+            updateRandomModalButton();
+        }
+
+        function updateRandomModalButton() {
+            if (!currentRandomGift) return;
+            const btn = document.getElementById('random-add-wishlist-btn');
+            const isSaved = wishlist.includes(currentRandomGift.id);
+
+            btn.onclick = () => toggleWishlistItem(currentRandomGift.id);
+
+            if (isSaved) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i><span>Uloženo v přáních</span>';
+                btn.classList.remove('bg-pink-600', 'hover:bg-pink-700');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i><span>Uložit do přání</span>';
+                btn.classList.add('bg-pink-600', 'hover:bg-pink-700');
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+            }
+        }
+
+        // ==========================================
+        // 8. TOAST NOTIFIKACE
+        // ==========================================
+        let toastTimeout;
+        function showToast(message, type = 'check') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.textContent = message;
+
+            if (type === 'heart') {
+                iconEl.className = 'fa-solid fa-heart text-pink-400';
+            } else if (type === 'trash') {
+                iconEl.className = 'fa-solid fa-trash-can text-pink-300';
+            } else {
+                iconEl.className = 'fa-solid fa-circle-check text-emerald-400';
+            }
+
+            toast.classList.remove('opacity-0', 'translate-y-10');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-10');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
